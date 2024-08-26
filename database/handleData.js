@@ -1,74 +1,115 @@
 import {
+    Server,
     User
 } from './database.js';
 
-const createUser = async (userID) => {
+const createUser = async (serverID, userID) => {
     try {
-        const user = await User.create({
-            userID
+        let server = await Server.findOne({
+            where: {
+                serverID
+            }
         });
 
-        console.log(`User ${userID} created.`);
+        if (!server) {
+            server = await Server.create({
+                serverID
+            });
+        }
+
+        const user = await User.create({
+            userID,
+            serverID
+        });
+        console.log(`User ${userID} created for server ${serverID}.`);
         return user;
     } catch (error) {
         console.error("Error creating user:", error);
     }
 };
 
-const deleteUser = async (userID) => {
+const deleteUser = async (serverID, userID) => {
     try {
         const result = await User.destroy({
             where: {
-                userID
+                userID,
+                serverID
             }
         });
 
         if (result > 0) {
-            console.log(`User ${userID} deleted.`);
+            console.log(`User ${userID} deleted from server ${serverID}.`);
         } else {
-            createUser(userID);
-            console.log(`User ${userID} not found. Attempting to create one.`);
+            console.log(`User ${userID} not found in server ${serverID}.`);
         }
     } catch (error) {
         console.error("Error deleting user:", error);
     }
 };
 
-const setUserMoney = async (userID, newAmount) => {
+const modifyUserMoney = async (serverID, userID, amountChange) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                userID,
+                serverID
+            }
+        });
+
+        if (user) {
+            const newAmount = user.money + amountChange;
+
+            await setUserMoney(serverID, userID, newAmount);
+            console.log(`User ${userID} money modified by ${amountChange}. New amount: ${newAmount} in server ${serverID}.`);
+        } else {
+            const initialAmount = amountChange;
+            await setUserMoney(serverID, userID, initialAmount);
+            console.log(`User ${userID} not found in server ${serverID}. Created user and set money to ${initialAmount}.`);
+        }
+    } catch (error) {
+        console.error("Error modifying user money:", error);
+    }
+};
+
+const setUserMoney = async (serverID, userID, amount) => {
     try {
         const [updated] = await User.update({
-            money: newAmount
+            money: amount
         }, {
             where: {
-                userID
+                userID,
+                serverID
             }
         });
 
         if (updated) {
-            console.log(`User ${userID} money updated to ${newAmount}.`);
+            console.log(`User ${userID} money updated to ${amount} in server ${serverID}.`);
         } else {
-            createUser(userID);
-            console.log(`User ${userID} not found. Attempting to create one.`);
+            const user = await createUser(serverID, userID);
+            user.money = amount;
+            await user.save();
+            console.log(`User ${userID} not found in server ${serverID}. Created user and set money to ${amount}.`);
         }
     } catch (error) {
         console.error("Error updating user money:", error);
     }
 };
 
-const getUserMoney = async (userID) => {
+const getUserMoney = async (serverID, userID) => {
     try {
         let user = await User.findOne({
             where: {
-                userID
+                userID,
+                serverID
             }
         });
 
         if (user) {
-            console.log(`User ${userID} has ${user.money} money.`);
+            console.log(`User ${userID} has ${user.money} money in server ${serverID}.`);
             return user.money;
         } else {
-            user = await createUser(userID);
-            console.log(`User ${userID} not found. Attempting to create one.`);
+            user = await createUser(serverID, userID);
+            console.log(`User ${userID} not found in server ${serverID}. Created user with default money.`);
             return user.money;
         }
     } catch (error) {
@@ -76,40 +117,45 @@ const getUserMoney = async (userID) => {
     }
 };
 
-const setUserDailyTimestamp = async (userID, newTimestamp) => {
+const setUserDailyTimestamp = async (serverID, userID, newTimestamp) => {
     try {
         const [updated] = await User.update({
             dailyTimestamp: newTimestamp
         }, {
             where: {
-                userID
+                userID,
+                serverID
             }
         });
 
         if (updated) {
-            console.log(`User ${userID} daily timestamp updated to ${newTimestamp}.`);
+            console.log(`User ${userID} daily timestamp updated to ${newTimestamp} in server ${serverID}.`);
         } else {
-            console.log(`User ${userID} not found. Attempting to create one.`);
+            const user = await createUser(serverID, userID);
+            user.dailyTimestamp = newTimestamp;
+            await user.save();
+            console.log(`User ${userID} not found in server ${serverID}. Created user and set daily timestamp to ${newTimestamp}.`);
         }
     } catch (error) {
         console.error("Error updating user daily timestamp:", error);
     }
 };
 
-const getUserDailyTimestamp = async (userID) => {
+const getUserDailyTimestamp = async (serverID, userID) => {
     try {
         let user = await User.findOne({
             where: {
-                userID
+                userID,
+                serverID
             }
         });
 
         if (user) {
-            console.log(`User ${userID} daily timestamp is ${user.dailyTimestamp}.`);
+            console.log(`User ${userID} daily timestamp is ${user.dailyTimestamp} in server ${serverID}.`);
             return user.dailyTimestamp;
         } else {
-            user = await createUser(userID);
-            console.log(`User ${userID} not found. Attempting to create one.`);
+            user = await createUser(serverID, userID);
+            console.log(`User ${userID} not found in server ${serverID}. Created user with default daily timestamp.`);
             return user.dailyTimestamp;
         }
     } catch (error) {
@@ -117,11 +163,31 @@ const getUserDailyTimestamp = async (userID) => {
     }
 };
 
+const getRichestUsers = async (serverID) => {
+    try {
+        const users = await User.findAll({
+            where: {
+                serverID
+            },
+            order: [
+                ['money', 'DESC']
+            ],
+            limit: 5
+        });
+
+        return users;
+    } catch (error) {
+        console.error("Error retrieving users:", error);
+    }
+}
+
 export {
     createUser,
     deleteUser,
+    modifyUserMoney,
     setUserMoney,
     getUserMoney,
     setUserDailyTimestamp,
-    getUserDailyTimestamp
-}
+    getUserDailyTimestamp,
+    getRichestUsers
+};

@@ -1,4 +1,6 @@
-import * as utils from '../../bot_modules/utils.js';
+import {
+    easyEmbed
+} from "../../bot_modules/utils.js";
 import dotenv from 'dotenv';
 dotenv.config()
 
@@ -20,14 +22,14 @@ export default {
 
         if (process.env.LOCKUP === "1" && interaction.user.id !== process.env.OWNER_ID) {
             return interaction.reply({
-                embeds: [utils.easyEmbed("#ff0000", "The bot is currently locked")],
+                embeds: [easyEmbed("#ff0000", "The bot is currently locked")],
                 ephemeral: true
             });
         }
 
         if (command.devOnly && interaction.user.id !== process.env.OWNER_ID) {
             return interaction.reply({
-                embeds: [utils.easyEmbed("#ff0000", "This command is currently inaccessible")],
+                embeds: [easyEmbed("#ff0000", "This command is currently inaccessible")],
                 ephemeral: true
             });
         }
@@ -48,7 +50,7 @@ export default {
 
                 if (now < expirationTime) {
                     return interaction.reply({
-                        embeds: [utils.easyEmbed("#ffff00", "Cooldown", `Please wait ${formattedTimeLeft}s before using this command again`)],
+                        embeds: [easyEmbed("#ffff00", "Cooldown", `Please wait ${formattedTimeLeft}s before using this command again`)],
                         ephemeral: true
                     });
                 }
@@ -66,7 +68,7 @@ export default {
         } catch (error) {
             console.error(`Error executing command: ${commandName}:`, error);
             return interaction.reply({
-                embeds: [utils.easyEmbed("#ff0000", "An Error occured while running this command", `${error}`)],
+                embeds: [easyEmbed("#ff0000", "An Error occured while running this command", `${error}`)],
                 ephemeral: true
             });
         }

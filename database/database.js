@@ -3,18 +3,22 @@ import {
     DataTypes
 } from 'sequelize';
 
-const oneDay = 24 * 60 * 60 * 1000;
-const yesterday = Date.now() - oneDay;
-
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: './database/database.sqlite'
 });
 
+const Server = sequelize.define('Server', {
+    serverID: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false
+    }
+})
+
 const User = sequelize.define('User', {
     userID: {
         type: DataTypes.STRING,
-        primaryKey: true,
         allowNull: false
     },
     money: {
@@ -25,14 +29,22 @@ const User = sequelize.define('User', {
     dailyTimestamp: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        defaultValue: yesterday
+        defaultValue: Date.now() - (24 * 60 * 60 * 1000)
     }
 });
+
+Server.hasMany(User, {
+    foreignKey: 'serverID'
+});
+User.belongsTo(Server, {
+    foreignKey: 'serverID'
+})
 
 sequelize.sync().then(() => {
     console.log("Database & tables created!");
 });
 
 export {
+    Server,
     User
 };

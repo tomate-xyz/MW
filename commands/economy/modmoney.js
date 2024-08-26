@@ -3,12 +3,15 @@ import {
 } from "discord.js";
 import {
     getUserMoney,
-    setUserMoney
+    modifyUserMoney
 } from "../../database/handleData.js";
+import {
+    easyEmbed
+} from "../../bot_modules/utils.js";
 
 export default {
     name: "modmoney",
-    description: "Modify user profiles",
+    description: "Modify user money",
     devOnly: true,
     default_member_permissions: 'Administrator',
     options: [{
@@ -28,12 +31,17 @@ export default {
     ],
 
     async execute(interaction, client) {
-        const user = interaction.options.get('user').value;
+        const serverID = interaction.guild.id;
+        const userID = interaction.options.get('user').value;
         const amount = interaction.options.get('amount').value;
-        const money = await getUserMoney(user) + amount;
 
-        setUserMoney(user, money);
+        modifyUserMoney(serverID, userID, amount);
 
-        console.log(user, money);
+        const money = await getUserMoney(serverID, userID);
+
+        return interaction.reply({
+            embeds: [easyEmbed("#00ff00", "Transaction", `Set money of <@${userID}> to \`${money}€\``)],
+            ephemeral: true
+        });
     },
 };
