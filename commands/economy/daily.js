@@ -11,7 +11,6 @@ import {
 export default {
     name: "daily",
     description: "Claim your daily money",
-    devOnly: true,
 
     async execute(interaction) {
         const userID = interaction.user.id;
