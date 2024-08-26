@@ -1,6 +1,6 @@
 import {
     getUserMoney,
-    getUserLastDailyTimestamp
+    getUserDailyTimestamp
 } from "../../database/handleData.js";
 
 export default {
@@ -11,7 +11,7 @@ export default {
         const userID = interaction.user.id;
 
         interaction.reply({
-            content: `> 💰 Money: \`${await getUserMoney(userID)}€\`\n> 🕑 Last Daily: <t:${Math.floor(await getUserLastDailyTimestamp(userID) / 1000)}:R>`,
+            content: `> 💰 Money: \`${await getUserMoney(userID)}€\`\n> 🕑 Last Daily: <t:${Math.floor(await getUserDailyTimestamp(userID) / 1000)}:R>`,
             ephemeral: true
         });
     },

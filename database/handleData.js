@@ -55,30 +55,9 @@ const setUserMoney = async (userID, newAmount) => {
     }
 };
 
-const setUserLastDailyTimestamp = async (userID, newTimestamp) => {
-    try {
-        const [updated] = await User.update({
-            lastDailyTimestamp: newTimestamp
-        }, {
-            where: {
-                userID
-            }
-        });
-
-        if (updated) {
-            console.log(`User ${userID} last daily timestamp updated to ${newTimestamp}.`);
-        } else {
-            createUser(userID);
-            console.log(`User ${userID} not found. Attempting to create one.`);
-        }
-    } catch (error) {
-        console.error("Error updating user last daily timestamp:", error);
-    }
-};
-
 const getUserMoney = async (userID) => {
     try {
-        const user = await User.findOne({
+        let user = await User.findOne({
             where: {
                 userID
             }
@@ -88,32 +67,53 @@ const getUserMoney = async (userID) => {
             console.log(`User ${userID} has ${user.money} money.`);
             return user.money;
         } else {
-            createUser(userID);
+            user = await createUser(userID);
             console.log(`User ${userID} not found. Attempting to create one.`);
-            return 10;
+            return user.money;
         }
     } catch (error) {
         console.error("Error retrieving user money:", error);
     }
 };
 
-const getUserLastDailyTimestamp = async (userID) => {
+const setUserDailyTimestamp = async (userID, newTimestamp) => {
     try {
-        const user = await User.findOne({
+        const [updated] = await User.update({
+            dailyTimestamp: newTimestamp
+        }, {
+            where: {
+                userID
+            }
+        });
+
+        if (updated) {
+            console.log(`User ${userID} daily timestamp updated to ${newTimestamp}.`);
+        } else {
+            console.log(`User ${userID} not found. Attempting to create one.`);
+        }
+    } catch (error) {
+        console.error("Error updating user daily timestamp:", error);
+    }
+};
+
+const getUserDailyTimestamp = async (userID) => {
+    try {
+        let user = await User.findOne({
             where: {
                 userID
             }
         });
 
         if (user) {
-            console.log(`User ${userID} last daily timestamp is ${user.lastDailyTimestamp}.`);
-            return user.lastDailyTimestamp;
+            console.log(`User ${userID} daily timestamp is ${user.dailyTimestamp}.`);
+            return user.dailyTimestamp;
         } else {
-            createUser(userID);
+            user = await createUser(userID);
             console.log(`User ${userID} not found. Attempting to create one.`);
+            return user.dailyTimestamp;
         }
     } catch (error) {
-        console.error("Error retrieving user last daily timestamp:", error);
+        console.error("Error retrieving user daily timestamp:", error);
     }
 };
 
@@ -122,6 +122,6 @@ export {
     deleteUser,
     setUserMoney,
     getUserMoney,
-    setUserLastDailyTimestamp,
-    getUserLastDailyTimestamp
+    setUserDailyTimestamp,
+    getUserDailyTimestamp
 }

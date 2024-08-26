@@ -22,7 +22,7 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: 10
     },
-    lastDailyTimestamp: {
+    dailyTimestamp: {
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: yesterday
