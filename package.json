@@ -9,7 +9,7 @@
   },
   "type": "module",
   "keywords": [],
-  "author": "",
+  "author": "tomatexyz",
   "license": "ISC",
   "dependencies": {
     "@discordjs/voice": "^0.17.0",
