@@ -4,7 +4,7 @@ export default {
 
     async execute(interaction, client) {
         interaction.reply({
-            content: `> ⏱️ Uptime: \`${formatUptime(client.uptime)}\`\n> 🏓 Latency: \`${Date.now() - interaction.createdTimestamp}ms\`\n> 🏓 API Latency: \`${Math.round(client.ws.ping)}ms\``,
+            content: `> ⏱️ Uptime: \`${formatUptime(client.uptime)}\`\n> 🏓 Latency: \`${Date.now() - interaction.createdTimestamp}ms\``,
             ephemeral: true
         });
     },
