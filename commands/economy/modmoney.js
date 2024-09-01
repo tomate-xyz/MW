@@ -35,7 +35,7 @@ export default {
         const userID = interaction.options.get('user').value;
         const amount = interaction.options.get('amount').value;
 
-        modifyUserMoney(serverID, userID, amount);
+        await modifyUserMoney(serverID, userID, amount);
 
         const money = await getUserMoney(serverID, userID);
 
