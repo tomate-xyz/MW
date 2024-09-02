@@ -32,8 +32,8 @@ export default {
 
     async execute(interaction, client) {
         const serverID = interaction.guild.id;
-        const userID = interaction.options.get('user').value;
-        const amount = interaction.options.get('amount').value;
+        const userID = interaction.options.getUser('user');
+        const amount = interaction.options.getInteger('amount');
 
         await modifyUserMoney(serverID, userID, amount);
 
