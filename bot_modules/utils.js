@@ -1,6 +1,8 @@
 import {
     EmbedBuilder
 } from "discord.js";
+import fs from "fs";
+import path from "path";
 
 export function easyEmbed(color, title, description) {
     const embed = new EmbedBuilder()
@@ -21,4 +23,23 @@ export function easyArrayShuffle(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+export function easyLog(message, state) {
+    const logDir = path.join('./logs');
+
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0];
+    const timeStr = now.toTimeString().split(' ')[0];
+
+    const logEntry = `[${dateStr}:${timeStr}] [${state}] ${message}\n`;
+
+    const logFile = path.join(logDir, `${dateStr}.log`);
+    const latestLogFile = path.join(logDir, 'latest.log');
+
+    fs.appendFileSync(logFile, logEntry, 'utf8');
+    fs.writeFileSync(latestLogFile, logEntry, {
+        flag: 'a',
+        encoding: 'utf8'
+    });
 }

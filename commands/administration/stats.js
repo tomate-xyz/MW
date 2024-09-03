@@ -1,3 +1,7 @@
+import {
+    easyLog
+} from "../../bot_modules/utils.js";
+
 export default {
     name: "stats",
     description: "Show bot stats",
