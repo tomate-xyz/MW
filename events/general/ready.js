@@ -23,7 +23,7 @@ export default {
     }
 
     updatePresence();
-    setInterval(updatePresence, 30000)
+    setInterval(updatePresence, 30000);
   }
 };
 
