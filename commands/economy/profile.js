@@ -17,7 +17,7 @@ export default {
         const timeDifference = currentTime - lastDailyTimestamp;
         const isDailyAvailable = timeDifference >= oneDay;
 
-        const dailyText = isDailyAvailable ? "\`Available!\`" : `<t:${Math.floor((await getUserDailyTimestamp(serverID, userID) + oneDay) / 1000)}:R>`;
+        const dailyText = isDailyAvailable ? "\`Available!\`" : `<t:${Math.floor((await getUserDailyTimestamp(serverID, userID) + oneDay) / 1000)}:f>`;
 
         interaction.reply({
             content: `> 💰 Money: \`${await getUserMoney(serverID, userID)}€\`\n> 🕑 Next Daily: ${dailyText}`,
