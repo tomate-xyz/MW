@@ -58,7 +58,7 @@ export default {
 
         const buffer = canvas.toBuffer();
         const attachment = new AttachmentBuilder(buffer, {
-            name: 'mw-stretch.gif'
+            name: 'mw-stretch.png'
         });
 
         return interaction.reply({

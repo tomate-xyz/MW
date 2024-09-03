@@ -110,7 +110,7 @@ export default {
         const buffer = canvas.toBuffer();
 
         const attachment = new AttachmentBuilder(buffer, {
-            name: 'mw-header.gif'
+            name: 'mw-header.png'
         });
 
         return interaction.reply({
