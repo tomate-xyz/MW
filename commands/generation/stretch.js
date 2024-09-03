@@ -30,13 +30,16 @@ export default {
     ],
 
     async execute(interaction, client) {
+        interaction.deferReply({
+            ephemeral: true
+        });
+
         const imageURL = interaction.options.getAttachment('image').proxyURL;
         const multiplier = interaction.options.getNumber('multiplier');
 
         if (!isPngOrJpg(imageURL)) {
-            return interaction.reply({
-                embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")],
-                ephemeral: true
+            return await interaction.editReply({
+                embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")]
             });
         }
 
@@ -46,9 +49,8 @@ export default {
         try {
             canvas = createCanvas(image.width * multiplier, image.height)
         } catch {
-            return interaction.reply({
-                embeds: [easyEmbed("#ff0000", "Image width is too long")],
-                ephemeral: true
+            return interaction.editReply({
+                embeds: [easyEmbed("#ff0000", "Image width is too long")]
             })
         }
 
@@ -61,7 +63,7 @@ export default {
             name: 'mw-stretch.png'
         });
 
-        return interaction.reply({
+        interaction.editReply({
             files: [attachment]
         });
     },
