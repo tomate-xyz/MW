@@ -28,13 +28,20 @@ export default {
     ],
 
     async execute(interaction, client) {
+        await interaction.deferReply();
+
         const imageURL = interaction.options.getAttachment('image').proxyURL;
         const text = interaction.options.getString('text');
 
         if (!isPngOrJpg(imageURL)) {
-            return interaction.reply({
-                embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")],
-                ephemeral: true
+            return interaction.editReply({
+                embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")]
+            });
+        }
+
+        if (text.length > 2000) {
+            return interaction.editReply({
+                embeds: [easyEmbed("#ff0000", "Text is too long")]
             });
         }
 
@@ -113,7 +120,7 @@ export default {
             name: 'mw-header.png'
         });
 
-        return interaction.reply({
+        return interaction.editReply({
             files: [attachment]
         });
     },
