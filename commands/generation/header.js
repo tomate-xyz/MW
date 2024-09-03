@@ -51,7 +51,7 @@ export default {
         const minFontSize = 20;
 
         let barHeight = Math.max(image.height * 0.1, minBarHeight);
-        let fontSize = Math.max(barHeight * 0.55, minFontSize);
+        let fontSize = Math.max(barHeight * 0.53, minFontSize);
 
         const maxTextWidth = image.width * 0.9;
         const words = text.split(" ");
@@ -87,7 +87,7 @@ export default {
 
         ctx.drawImage(image, 0, barHeight, image.width, image.height);
 
-        ctx.font = `${fontSize}px Arial`;
+        ctx.font = `${fontSize}px Impact`;
         ctx.fillStyle = 'black';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
