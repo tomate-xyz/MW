@@ -26,5 +26,5 @@ function formatUptime(uptime) {
     let formattedHours = String(hours).padStart(2, '0');
     let formattedMinutes = String(minutes).padStart(2, '0');
 
-    return `${formattedDays}:${formattedHours}:${formattedMinutes}`;
+    return `${formattedDays}d ${formattedHours}h ${formattedMinutes}m`;
 }
