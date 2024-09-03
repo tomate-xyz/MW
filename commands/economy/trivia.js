@@ -1,6 +1,7 @@
 import {
     easyArrayPicker,
-    easyArrayShuffle
+    easyArrayShuffle,
+    easyEmbed
 } from "../../bot_modules/utils.js";
 import {
     countriesAndCapitals
@@ -199,13 +200,20 @@ export default {
 
         interaction.reply(replyOptions);
 
-        const filter = i => i.user.id === userID && answers.map(a => a.toString()).includes(i.customId);
+        const filter = i => answers.map(a => a.toString()).includes(i.customId);
         const collector = interaction.channel.createMessageComponentCollector({
             filter,
             time: 15000
         });
 
         collector.on('collect', async i => {
+            if (i.user.id !== userID) {
+                return i.reply({
+                    embeds: [easyEmbed("#ff0000", "You can't answer this quiz! This is not yours.")],
+                    ephemeral: true
+                });
+            }
+
             let response = '';
             if (i.customId === correctAnswer.toString()) {
                 response = `> ✅ \`${i.customId}\` is correct!`;
