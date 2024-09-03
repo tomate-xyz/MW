@@ -30,15 +30,13 @@ export default {
     ],
 
     async execute(interaction, client) {
-        interaction.deferReply({
-            ephemeral: true
-        });
+        await interaction.deferReply();
 
         const imageURL = interaction.options.getAttachment('image').proxyURL;
         const multiplier = interaction.options.getNumber('multiplier');
 
         if (!isPngOrJpg(imageURL)) {
-            return await interaction.editReply({
+            return interaction.editReply({
                 embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")]
             });
         }
