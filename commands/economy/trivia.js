@@ -4,6 +4,10 @@ import {
     easyEmbed
 } from "../../bot_modules/utils.js";
 import {
+    getUserMoney,
+    modifyUserMoney
+} from "../../database/handleData.js"
+import {
     countriesAndCapitals
 } from "../../database/trivia.js";
 import {
@@ -15,10 +19,11 @@ import {
 
 export default {
     name: "trivia",
-    description: "Play trivia quizzes for prizes",
+    description: "Play trivia quizzes for prizes. Play for 2€",
 
     async execute(interaction) {
         const userID = interaction.user.id;
+        const serverID = interaction.guild.id;
 
         const topics = ["Geography", "Maths"];
         const topic = easyArrayPicker(topics);
@@ -31,6 +36,15 @@ export default {
         let attachment;
         let answers = [];
         let correctAnswer;
+
+        if (await getUserMoney(serverID, userID) < 2) {
+            return interaction.reply({
+                embeds: [easyEmbed("#ff0000", "You do not have enough money")],
+                ephemeral: true
+            });
+        }
+
+        modifyUserMoney(serverID, userID, -2);
 
         switch (topic) {
             case "Geography":
@@ -209,16 +223,18 @@ export default {
         collector.on('collect', async i => {
             if (i.user.id !== userID) {
                 return i.reply({
-                    embeds: [easyEmbed("#ff0000", "You can't answer this quiz! This is not yours.")],
+                    embeds: [easyEmbed("#ff0000", "You can't answer this quiz! This is not yours")],
                     ephemeral: true
                 });
             }
 
             let response = '';
             if (i.customId === correctAnswer.toString()) {
-                response = `> ✅ \`${i.customId}\` is correct!`;
+                response = `> ✅ \`${i.customId}\` is correct!\n> You won \`2€\`!`;
+
+                await modifyUserMoney(serverID, userID, 4);
             } else {
-                response = `> ❌ \`${i.customId}\` is incorrect. The correct answer would've been \`${correctAnswer.toString()}\`!`;
+                response = `> ❌ \`${i.customId}\` is incorrect. The correct answer would've been \`${correctAnswer.toString()}\`!\n> You lost \`2€\`!`;
             }
 
             actionRows.forEach(row => row.components.forEach(button => button.setDisabled(true)));
@@ -236,7 +252,7 @@ export default {
                 actionRows.forEach(row => row.components.forEach(button => button.setDisabled(true)));
 
                 interaction.editReply({
-                    content: `> 🎲 **Quiz Time!** Ended!\n> -# Topic: ${topic}\n> ${question}\n> \n> ⌛ Time is up. The correct answer would've been \`${correctAnswer}\`!`,
+                    content: `> 🎲 **Quiz Time!** Ended!\n> -# Topic: ${topic}\n> ${question}\n> \n> ⌛ Time is up. The correct answer would've been \`${correctAnswer}\`!\n> You lost \`2€\`!`,
                     components: actionRows
                 });
             }
