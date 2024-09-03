@@ -1,5 +1,6 @@
 import {
-    easyEmbed
+    easyEmbed,
+    easyLog
 } from "../../bot_modules/utils.js";
 import dotenv from 'dotenv';
 dotenv.config()
@@ -19,6 +20,8 @@ export default {
         const command = client.commands.get(commandName);
 
         if (!client.commands.has(commandName)) return;
+
+        easyLog(`User ${interaction.user.id} used /${commandName}`, 'LOG', interaction.guild.id);
 
         if (process.env.LOCKUP === "1" && interaction.user.id !== process.env.OWNER_ID) {
             return interaction.reply({

@@ -25,7 +25,8 @@ export function easyArrayShuffle(array) {
     return array;
 }
 
-export function easyLog(message, state) {
+
+export function easyLog(message, state, serverID) {
     const logDir = path.join('./logs');
 
     const now = new Date();
@@ -34,8 +35,15 @@ export function easyLog(message, state) {
 
     const logEntry = `[${dateStr}:${timeStr}] [${state}] ${message}\n`;
 
-    const logFile = path.join(logDir, `${dateStr}.log`);
-    const latestLogFile = path.join(logDir, 'latest.log');
+    const serverLogDir = path.join(logDir, serverID);
+    const logFile = path.join(serverLogDir, `${dateStr}.log`);
+    const latestLogFile = path.join(serverLogDir, 'latest.log');
+
+    if (!fs.existsSync(serverLogDir)) {
+        fs.mkdirSync(serverLogDir, {
+            recursive: true
+        });
+    }
 
     fs.appendFileSync(logFile, logEntry, 'utf8');
     fs.writeFileSync(latestLogFile, logEntry, {

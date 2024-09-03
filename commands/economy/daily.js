@@ -30,7 +30,7 @@ export default {
             interaction.reply({
                 embeds: [easyEmbed("#2564ff", "Daily Money", `Claimed \`${randomMoney}€\`!`)]
             });
-            easyLog(`User ${userID} claimed ${randomMoney}€`, 'INFO');
+            easyLog(`User ${userID} claimed ${randomMoney}€`, 'INFO', serverID);
         } else {
             interaction.reply({
                 embeds: [easyEmbed("#ffff00", "Daily Money", `Try again <t:${Math.floor((await getUserDailyTimestamp(serverID, userID) + oneDay) / 1000)}:R>!`)],
