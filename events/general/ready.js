@@ -28,11 +28,16 @@ export default {
 };
 
 function formatUptime(uptime) {
-  const days = Math.floor(uptime / (24 * 3600));
-  uptime %= 24 * 3600;
-  const hours = Math.floor(uptime / 3600);
-  uptime %= 3600;
-  const minutes = Math.floor(uptime / 60);
+  let totalSeconds = uptime / 1000;
+  let days = Math.floor(totalSeconds / 86400);
+  totalSeconds %= 86400;
+  let hours = Math.floor(totalSeconds / 3600);
+  totalSeconds %= 3600;
+  let minutes = Math.floor(totalSeconds / 60);
 
-  return `${days}d ${hours}h ${minutes}m`
+  let formattedDays = String(days).padStart(2, '0');
+  let formattedHours = String(hours).padStart(2, '0');
+  let formattedMinutes = String(minutes).padStart(2, '0');
+
+  return `${formattedDays}d ${formattedHours}h ${formattedMinutes}m`;
 }
