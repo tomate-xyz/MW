@@ -1,5 +1,6 @@
 logs/
 node_modules/
+temp/
 .env
 package-lock.json
 database/database.sqlite
