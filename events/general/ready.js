@@ -28,7 +28,7 @@ export default {
 };
 
 function formatUptime(uptime) {
-  let totalSeconds = uptime / 1000;
+  let totalSeconds = uptime;
   let days = Math.floor(totalSeconds / 86400);
   totalSeconds %= 86400;
   let hours = Math.floor(totalSeconds / 3600);
@@ -38,6 +38,8 @@ function formatUptime(uptime) {
   let formattedDays = String(days).padStart(2, '0');
   let formattedHours = String(hours).padStart(2, '0');
   let formattedMinutes = String(minutes).padStart(2, '0');
+
+  console.log(`${formattedDays}d ${formattedHours}h ${formattedMinutes}m`, process.uptime());
 
   return `${formattedDays}d ${formattedHours}h ${formattedMinutes}m`;
 }
