@@ -21,7 +21,15 @@ export default {
 
         if (!client.commands.has(commandName)) return;
 
-        easyLog(`User ${interaction.user.id} used /${commandName}`, 'LOG', interaction.guild.id);
+        let commandOptions = "";
+
+        if (interaction.options._hoistedOptions.length > 0) {
+            interaction.options._hoistedOptions.forEach(option => {
+                commandOptions += `${option.name}: ${option.value} `
+            })
+        }
+
+        easyLog(`User ${interaction.user.id} used /${commandName} ${commandOptions}`, 'LOG', interaction.guild.id);
 
         if (process.env.LOCKUP === "1" && interaction.user.id !== process.env.OWNER_ID) {
             return interaction.reply({
