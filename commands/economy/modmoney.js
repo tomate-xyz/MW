@@ -13,7 +13,6 @@ export default {
     name: "modmoney",
     description: "Modify user money",
     devOnly: true,
-    default_member_permissions: 'Administrator',
     options: [{
             name: "user",
             description: "User to modify",
@@ -32,7 +31,7 @@ export default {
 
     async execute(interaction, client) {
         const serverID = interaction.guild.id;
-        const userID = interaction.options.getUser('user');
+        const userID = interaction.options.getUser('user').id;
         const amount = interaction.options.getInteger('amount');
 
         await modifyUserMoney(serverID, userID, amount);
