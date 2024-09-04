@@ -30,40 +30,46 @@ export default {
     ],
 
     async execute(interaction, client) {
-        await interaction.deferReply();
-
-        const imageURL = interaction.options.getAttachment('image').proxyURL;
-        const multiplier = interaction.options.getNumber('multiplier');
-
-        if (!isPngOrJpg(imageURL)) {
-            return interaction.editReply({
-                embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")]
-            });
-        }
-
-        const image = await loadImage(imageURL);
-        let canvas;
-
         try {
-            canvas = createCanvas(image.width * multiplier, image.height)
+            await interaction.deferReply();
+
+            const imageURL = interaction.options.getAttachment('image').proxyURL;
+            const multiplier = interaction.options.getNumber('multiplier');
+
+            if (!isPngOrJpg(imageURL)) {
+                return interaction.editReply({
+                    embeds: [easyEmbed("#ff0000", "Attachment is not a png/jpg image")]
+                });
+            }
+
+            const image = await loadImage(imageURL);
+            let canvas;
+
+            try {
+                canvas = createCanvas(image.width * multiplier, image.height)
+            } catch {
+                return interaction.editReply({
+                    embeds: [easyEmbed("#ff0000", "Image width is too long")]
+                })
+            }
+
+            const ctx = canvas.getContext('2d');
+
+            ctx.drawImage(image, 0, 0, image.width * multiplier, image.height);
+
+            const buffer = canvas.toBuffer("image/png");
+            const attachment = new AttachmentBuilder(buffer, {
+                name: 'mw-stretch.png'
+            });
+
+            interaction.editReply({
+                files: [attachment]
+            });
         } catch {
             return interaction.editReply({
-                embeds: [easyEmbed("#ff0000", "Image width is too long")]
-            })
+                embeds: [easyEmbed("#ff0000", "An error occured while processing the image")]
+            });
         }
-
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(image, 0, 0, image.width * multiplier, image.height);
-
-        const buffer = canvas.toBuffer("image/png");
-        const attachment = new AttachmentBuilder(buffer, {
-            name: 'mw-stretch.png'
-        });
-
-        interaction.editReply({
-            files: [attachment]
-        });
     },
 };
 
