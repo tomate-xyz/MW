@@ -46,20 +46,20 @@ export default {
             let canvas;
 
             try {
-                canvas = createCanvas(image.width * multiplier, image.height)
+                canvas = createCanvas(image.width * multiplier, image.height);
             } catch {
                 return interaction.editReply({
                     embeds: [easyEmbed("#ff0000", "Image width is too long")]
-                })
+                });
             }
 
             const ctx = canvas.getContext('2d');
-
             ctx.drawImage(image, 0, 0, image.width * multiplier, image.height);
 
-            const buffer = canvas.toBuffer("image/png");
+            const format = getFormatFromUrl(imageURL);
+            const buffer = canvas.toBuffer(`image/${format}`);
             const attachment = new AttachmentBuilder(buffer, {
-                name: 'mw-stretch.png'
+                name: `mw-stretch.${format}`
             });
 
             interaction.editReply({
@@ -67,7 +67,7 @@ export default {
             });
         } catch {
             return interaction.editReply({
-                embeds: [easyEmbed("#ff0000", "An error occured while processing the image")]
+                embeds: [easyEmbed("#ff0000", "An error occurred while processing the image")]
             });
         }
     },
@@ -78,4 +78,11 @@ function isPngOrJpg(url) {
     return urlWithoutQuery.endsWith('.png') ||
         urlWithoutQuery.endsWith('.jpg') ||
         urlWithoutQuery.endsWith('.jpeg');
+}
+
+function getFormatFromUrl(url) {
+    const urlWithoutQuery = url.split('?')[0].toLowerCase();
+    if (urlWithoutQuery.endsWith('.png')) return 'png';
+    if (urlWithoutQuery.endsWith('.jpg') || urlWithoutQuery.endsWith('.jpeg')) return 'jpeg';
+    return 'png';
 }

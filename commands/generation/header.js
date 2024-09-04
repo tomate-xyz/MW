@@ -116,8 +116,8 @@ export default {
 
             ctx.fillText(line, textX, textY + yOffset);
 
-            const buffer = canvas.toBuffer("image/png");
-
+            const format = getFormatFromUrl(imageURL);
+            const buffer = canvas.toBuffer(`image/${format}`);
             const attachment = new AttachmentBuilder(buffer, {
                 name: 'mw-header.png'
             });
@@ -138,4 +138,11 @@ function isPngOrJpg(url) {
     return urlWithoutQuery.endsWith('.png') ||
         urlWithoutQuery.endsWith('.jpg') ||
         urlWithoutQuery.endsWith('.jpeg');
+}
+
+function getFormatFromUrl(url) {
+    const urlWithoutQuery = url.split('?')[0].toLowerCase();
+    if (urlWithoutQuery.endsWith('.png')) return 'png';
+    if (urlWithoutQuery.endsWith('.jpg') || urlWithoutQuery.endsWith('.jpeg')) return 'jpeg';
+    return 'png';
 }
