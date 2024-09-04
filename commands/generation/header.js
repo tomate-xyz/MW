@@ -47,11 +47,11 @@ export default {
 
         const image = await loadImage(imageURL);
 
-        const minBarHeight = 50;
-        const minFontSize = 20;
+        const bannerHeightRatio = 0.15;
+        const fontSizeRatio = 0.6;
 
-        let barHeight = Math.max(image.height * 0.1, minBarHeight);
-        let fontSize = Math.max(barHeight * 0.53, minFontSize);
+        let barHeight = image.height * bannerHeightRatio;
+        let fontSize = barHeight * fontSizeRatio;
 
         const maxTextWidth = image.width * 0.9;
         const words = text.split(" ");
@@ -60,7 +60,7 @@ export default {
 
         const tempCanvas = createCanvas(image.width, image.height + barHeight);
         const tempCtx = tempCanvas.getContext('2d');
-        tempCtx.font = `${fontSize}px Arial`;
+        tempCtx.font = `${fontSize}px Futura`;
 
         for (let n = 0; n < words.length; n++) {
             const testLine = line + words[n] + " ";
@@ -76,7 +76,6 @@ export default {
         }
 
         yOffset += fontSize;
-
         barHeight = Math.max(barHeight, yOffset * 1.2);
 
         const canvas = createCanvas(image.width, image.height + barHeight);
@@ -84,10 +83,9 @@ export default {
 
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, image.width, barHeight);
-
         ctx.drawImage(image, 0, barHeight, image.width, image.height);
 
-        ctx.font = `${fontSize}px Impact`;
+        ctx.font = `${fontSize}px Futura`;
         ctx.fillStyle = 'black';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -120,7 +118,7 @@ export default {
             name: 'mw-header.png'
         });
 
-        return interaction.editReply({
+        interaction.editReply({
             files: [attachment]
         });
     },
