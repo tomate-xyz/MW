@@ -39,7 +39,5 @@ function formatUptime(uptime) {
   let formattedHours = String(hours).padStart(2, '0');
   let formattedMinutes = String(minutes).padStart(2, '0');
 
-  console.log(`${formattedDays}d ${formattedHours}h ${formattedMinutes}m`, process.uptime());
-
   return `${formattedDays}d ${formattedHours}h ${formattedMinutes}m`;
 }
