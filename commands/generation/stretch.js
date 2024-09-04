@@ -5,7 +5,7 @@ import {
 import {
     createCanvas,
     loadImage
-} from "canvas";
+} from "@napi-rs/canvas";
 import {
     easyEmbed
 } from "../../bot_modules/utils.js";
@@ -56,7 +56,7 @@ export default {
 
         ctx.drawImage(image, 0, 0, image.width * multiplier, image.height);
 
-        const buffer = canvas.toBuffer();
+        const buffer = canvas.toBuffer("image/png");
         const attachment = new AttachmentBuilder(buffer, {
             name: 'mw-stretch.png'
         });

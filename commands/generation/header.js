@@ -4,8 +4,9 @@ import {
 } from "discord.js";
 import {
     createCanvas,
-    loadImage
-} from "canvas";
+    loadImage,
+    GlobalFonts
+} from "@napi-rs/canvas";
 import {
     easyEmbed
 } from "../../bot_modules/utils.js";
@@ -45,6 +46,8 @@ export default {
             });
         }
 
+        GlobalFonts.registerFromPath("./database/fonts/Futura Condensed ExtraBold.ttf", "Futura Condensed ExtraBold");
+
         const image = await loadImage(imageURL);
 
         const bannerHeightRatio = 0.15;
@@ -60,7 +63,7 @@ export default {
 
         const tempCanvas = createCanvas(image.width, image.height + barHeight);
         const tempCtx = tempCanvas.getContext('2d');
-        tempCtx.font = `${fontSize}px Futura`;
+        tempCtx.font = `${fontSize}px "Futura Condensed ExtraBold"`;
 
         for (let n = 0; n < words.length; n++) {
             const testLine = line + words[n] + " ";
@@ -85,7 +88,7 @@ export default {
         ctx.fillRect(0, 0, image.width, barHeight);
         ctx.drawImage(image, 0, barHeight, image.width, image.height);
 
-        ctx.font = `${fontSize}px Futura`;
+        ctx.font = `${fontSize}px "Futura Condensed ExtraBold"`;
         ctx.fillStyle = 'black';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -112,7 +115,7 @@ export default {
 
         ctx.fillText(line, textX, textY + yOffset);
 
-        const buffer = canvas.toBuffer();
+        const buffer = canvas.toBuffer("image/png");
 
         const attachment = new AttachmentBuilder(buffer, {
             name: 'mw-header.png'
