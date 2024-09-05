@@ -8,7 +8,10 @@ import {
     modifyUserMoney
 } from "../../database/handleData.js"
 import {
-    countriesAndCapitals
+    countriesAndCapitals,
+    languages,
+    sentences,
+    translateLanguage
 } from "../../database/trivia.js";
 import {
     ButtonBuilder,
@@ -25,7 +28,7 @@ export default {
         const userID = interaction.user.id;
         const serverID = interaction.guild.id;
 
-        const topics = ["Geography", "Maths"];
+        const topics = ["Geography", "Maths", "Languages"];
         const topic = easyArrayPicker(topics);
 
         let currentTime = Math.floor(Date.now() / 1000);
@@ -188,6 +191,28 @@ export default {
                     answers = easyArrayShuffle(answers);
                 }
                 break;
+            case "Languages":
+                const lang_modes = ["language"];
+                const lang_mode = easyArrayPicker(lang_modes);
+                const langs = Object.keys(languages);
+
+                if (lang_mode === "language") {
+                    const language = easyArrayPicker(langs);
+
+                    correctAnswer = language;
+                    question = `Which language is this: \`${await translateLanguage(easyArrayPicker(sentences), languages[language])}\`?`;
+                    answers = [correctAnswer];
+
+                    const incorrectLanguages = Object.keys(languages).filter(language => language !== correctAnswer);
+
+                    while (answers.length < 5) {
+                        const randomLanguage = easyArrayPicker(incorrectLanguages);
+                        if (!answers.includes(randomLanguage)) {
+                            answers.push(randomLanguage);
+                        }
+                    }
+                }
+                break
         }
 
         const buttons = answers.map(answer =>

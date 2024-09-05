@@ -197,6 +197,108 @@ const countriesAndCapitals = {
     "Zimbabwe": "Harare"
 };
 
+const sentences = [
+    "Hello!",
+    "Welcome!",
+    "Yes and No.",
+    "This is funny!",
+    "Hello, how are you?",
+    "What time is it?",
+    "Where is the nearest restaurant?",
+    "I would like a cup of coffee, please.",
+    "Can you help me?",
+    "How much does this cost?",
+    "I don't understand.",
+    "Where are you from?",
+    "My name is John.",
+    "Nice to meet you.",
+    "Have a great day!",
+    "I am learning a new language.",
+    "Can you speak English?",
+    "What is your favorite food?",
+    "I need directions to the hotel.",
+    "How old are you?",
+    "What is your name?",
+    "I live in Spain.",
+    "The weather is nice today.",
+    "Please don't do this.",
+    "Is there anything you need?",
+    "Can I pay with a credit card?",
+    "Do you have any recommendations?",
+    "Excuse me, where is the bathroom?",
+    "What time does the store close?",
+    "Do you need help?",
+    "I don't speak the language well.",
+    "Where can I buy a ticket?",
+    "The quick brown fox jumps over the lazy dog",
+    "I would like to make a reservation.",
+    "Is this seat taken?",
+    "What is your phone number?"
+];
+
+const languages = {
+    "Afrikaans": "af",
+    "Albanian": "sq",
+    "Arabic": "ar",
+    "Bengali": "bn",
+    "Bulgarian": "bg",
+    "Catalan": "ca",
+    "Chinese (Simplified)": "zh-CN",
+    "Chinese (Traditional)": "zh-TW",
+    "Croatian": "hr",
+    "Czech": "cs",
+    "Danish": "da",
+    "Dutch": "nl",
+    "English": "en",
+    "Estonian": "et",
+    "Finnish": "fi",
+    "French": "fr",
+    "Georgian": "ka",
+    "German": "de",
+    "Greek": "el",
+    "Hebrew": "he",
+    "Hindi": "hi",
+    "Hungarian": "hu",
+    "Icelandic": "is",
+    "Indonesian": "id",
+    "Italian": "it",
+    "Japanese": "ja",
+    "Korean": "ko",
+    "Latvian": "lv",
+    "Lithuanian": "lt",
+    "Macedonian": "mk",
+    "Malay": "ms",
+    "Norwegian": "no",
+    "Persian": "fa",
+    "Polish": "pl",
+    "Portuguese": "pt",
+    "Romanian": "ro",
+    "Russian": "ru",
+    "Serbian": "sr",
+    "Slovak": "sk",
+    "Slovenian": "sl",
+    "Spanish": "es",
+    "Swahili": "sw",
+    "Swedish": "sv",
+    "Tamil": "ta",
+    "Thai": "th",
+    "Turkish": "tr",
+    "Ukrainian": "uk",
+    "Vietnamese": "vi",
+    "Welsh": "cy",
+    "Zulu": "zu"
+};
+
+async function translateLanguage(text, lang) {
+    const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`);
+    const data = await response.json();
+
+    return data[0][0][0];
+}
+
 export {
-    countriesAndCapitals
+    countriesAndCapitals,
+    languages,
+    sentences,
+    translateLanguage
 };
