@@ -34,6 +34,7 @@ export default {
             "coin2": "🪙",
             "coin3": "🪙",
             "coin4": "🪙",
+            "coin5": "🪙",
             "nothing1": "❌",
             "nothing2": "❌",
             "nothing3": "❌",
@@ -44,15 +45,14 @@ export default {
             "bomb2": "💣",
             "bomb3": "💣",
             "bomb4": "💣",
-            "bomb5": "💣",
-            "bomb6": "💣"
+            "bomb5": "💣"
         };
 
         let win = 0;
         let moves = 0;
         let currentTime = Math.floor(Date.now() / 1000);
         let endTime = currentTime + 60;
-        let message = `> 🎲 **Gamble Time!** Ends <t:${endTime}:R>\n> -# Spaces: 4 Coins, 6 Nothing, 6 Bombs\n> \`🪙\` Continue playing and win \`5€\`\n> \`❌\` Continue playing\n> \`💣\` Game over`;
+        let message = `> 🎲 **Gamble Time!** Ends <t:${endTime}:R>\n> -# Spaces: 5 Coins, 6 Nothing, 5 Bombs\n> \`🪙\` Continue playing and win \`5€\`\n> \`❌\` Continue playing\n> \`💣\` Game over`;
 
         let buttons = [];
         const spaces = Object.keys(availableSpaces);
@@ -167,7 +167,7 @@ export default {
             });
 
             await interaction.editReply({
-                content: `> 🎲 **Gamble Time!** Ended!\n> -# Spaces: 4 Coins, 6 Nothing, 6 Bombs\n> \`🪙\` Continue playing and win \`5€\`\n> \`❌\` Continue playing\n> \`💣\` Game over\n> \n> You won \`${win}€\` in ${moves} move(s)!`,
+                content: `> 🎲 **Gamble Time!** Ended!\n> -# Spaces: 5 Coins, 6 Nothing, 5 Bombs\n> \`🪙\` Continue playing and win \`5€\`\n> \`❌\` Continue playing\n> \`💣\` Game over\n> \n> You won \`${win}€\` in ${moves} move(s)!`,
                 components: finalRows
             });
 
