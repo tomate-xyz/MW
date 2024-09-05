@@ -28,6 +28,15 @@ export default {
         const userID = interaction.user.id;
         const serverID = interaction.guild.id;
 
+        if (await getUserMoney(serverID, userID) < 2) {
+            return interaction.reply({
+                embeds: [easyEmbed("#ff0000", "You do not have enough money")],
+                ephemeral: true
+            });
+        }
+
+        modifyUserMoney(serverID, userID, -2);
+
         const topics = ["Geography", "Maths", "Languages"];
         const topic = easyArrayPicker(topics);
 
@@ -39,15 +48,6 @@ export default {
         let attachment;
         let answers = [];
         let correctAnswer;
-
-        if (await getUserMoney(serverID, userID) < 2) {
-            return interaction.reply({
-                embeds: [easyEmbed("#ff0000", "You do not have enough money")],
-                ephemeral: true
-            });
-        }
-
-        modifyUserMoney(serverID, userID, -2);
 
         switch (topic) {
             case "Geography":
@@ -249,7 +249,7 @@ export default {
         collector.on('collect', async i => {
             if (i.user.id !== userID) {
                 return i.reply({
-                    embeds: [easyEmbed("#ff0000", "You can't answer this quiz! This is not yours")],
+                    embeds: [easyEmbed("#ff0000", "You can't interact with this game!")],
                     ephemeral: true
                 });
             }
