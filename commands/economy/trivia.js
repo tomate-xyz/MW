@@ -111,8 +111,6 @@ export default {
                 const math_modes = ["addition", "substraction", "multiplication", "division"];
                 const math_mode = easyArrayPicker(math_modes);
 
-                console.log(math_mode);
-
                 if (math_mode === "addition") {
                     const num1 = Math.floor(Math.random() * 10000) + 1;
                     const num2 = Math.floor(Math.random() * 10000) + 1;
@@ -178,8 +176,6 @@ export default {
                     answers = [correctAnswer];
 
                     while (answers.length < 5) {
-                        console.log(answers.length);
-
                         const offset = Math.floor(Math.random() * 10) + 1;
                         const randomValue = Math.random() * offset;
                         const wrongAnswer = (num1 / num2 + randomValue).toFixed(2);
