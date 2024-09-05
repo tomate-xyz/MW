@@ -85,7 +85,7 @@ export default {
         });
 
         const filter = i => i.customId in availableSpaces;
-        const collector = interaction.channel.createMessageComponentCollector({
+        const collector = messageReply.createMessageComponentCollector({
             filter,
             time: 60000
         });

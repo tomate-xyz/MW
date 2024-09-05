@@ -238,10 +238,10 @@ export default {
             replyOptions.files = [attachment];
         }
 
-        interaction.reply(replyOptions);
+        const messageReply = await interaction.reply(replyOptions);
 
         const filter = i => answers.map(a => a.toString()).includes(i.customId);
-        const collector = interaction.channel.createMessageComponentCollector({
+        const collector = messageReply.createMessageComponentCollector({
             filter,
             time: 15000
         });
