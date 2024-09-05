@@ -167,7 +167,7 @@ export default {
             });
 
             await interaction.editReply({
-                content: `> 🎲 **Gamble Time!** Ended!\n> -# Spaces: 4 Coins, 6 Nothing, 6 Bombs\n> \`🪙\` Continue playing and win \`5€\`\n> \`❌\` Continue playing\n> \`💣\` Game over\n> \n> You won \`${win}€\` in ${moves} moves!`,
+                content: `> 🎲 **Gamble Time!** Ended!\n> -# Spaces: 4 Coins, 6 Nothing, 6 Bombs\n> \`🪙\` Continue playing and win \`5€\`\n> \`❌\` Continue playing\n> \`💣\` Game over\n> \n> You won \`${win}€\` in ${moves} move(s)!`,
                 components: finalRows
             });
 
