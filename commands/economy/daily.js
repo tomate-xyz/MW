@@ -16,7 +16,7 @@ export default {
         const serverID = interaction.guild.id;
         const userID = interaction.user.id;
 
-        const member = await interaction.guilf.members.fetch(userID);
+        const member = await interaction.guild.members.fetch(userID);
 
         const currentTime = Date.now();
         const oneDay = 24 * 60 * 60 * 1000;
