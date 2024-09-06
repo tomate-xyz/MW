@@ -15,7 +15,8 @@ export default {
     async execute(interaction) {
         const serverID = interaction.guild.id;
         const userID = interaction.user.id;
-        const user = interaction.user;
+
+        const member = await interaction.guilf.members.fetch(userID);
 
         const currentTime = Date.now();
         const oneDay = 24 * 60 * 60 * 1000;
@@ -30,7 +31,7 @@ export default {
 
             message = `> 🪙 Daily Money\n> Claimed \`${randomMoney}€\``;
 
-            if (user.premiumSince) {
+            if (member.premiumSinceTimestamp) {
                 message = `> 🪙 Daily Money\n> Claimed \`${randomMoney}€\` + \`${boostRandomMoney}€\` Booster Bonus`
                 modifyUserMoney(serverID, userID, boostRandomMoney);
             }
