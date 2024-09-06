@@ -28,10 +28,10 @@ export default {
             const randomMoney = Math.floor(Math.random() * 10) + 1;
             const boostRandomMoney = Math.floor(Math.random() * 10) + 1;
 
-            message = `> 🪙 Daily Money\n> Claimed ${randomMoney}`;
+            message = `> 🪙 Daily Money\n> Claimed \`${randomMoney}€\``;
 
-            if (user.premiumSinceTimestamp) {
-                message = `> 🪙 Daily Money\n> Claimed ${randomMoney}€ + ${boostRandomMoney}€ Booster Bonus`
+            if (user.premiumSince) {
+                message = `> 🪙 Daily Money\n> Claimed \`${randomMoney}€\` + \`${boostRandomMoney}€\` Booster Bonus`
                 modifyUserMoney(serverID, userID, boostRandomMoney);
             }
 
