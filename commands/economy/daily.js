@@ -29,10 +29,10 @@ export default {
             const randomMoney = Math.floor(Math.random() * 10) + 1;
             const boostRandomMoney = Math.floor(Math.random() * 10) + 1;
 
-            message = `> 🪙 Daily Money\n> Claimed \`${randomMoney}€\``;
+            message = `> 🪙 **Daily Money**\n> Claimed \`${randomMoney}€\``;
 
             if (member.premiumSinceTimestamp) {
-                message = `> 🪙 Daily Money\n> Claimed \`${randomMoney}€\` + \`${boostRandomMoney}€\` Booster Bonus`
+                message = `> 🪙 **Daily Money**\n> Claimed \`${randomMoney}€\` + \`${boostRandomMoney}€\` **Booster Bonus**`
                 modifyUserMoney(serverID, userID, boostRandomMoney);
             }
 
