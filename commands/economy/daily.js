@@ -25,14 +25,18 @@ export default {
         const isDailyAvailable = timeDifference >= oneDay;
 
         if (isDailyAvailable) {
-            let message;
             const randomMoney = Math.floor(Math.random() * 10) + 1;
             const boostRandomMoney = Math.floor(Math.random() * 10) + 1;
 
-            message = `> 🪙 **Daily Money**\n> Claimed \`${randomMoney}€\``;
+            let message;
+            let logMessage = `User ${userID} claimed ${randomMoney}€`;
+
+            message = `> 💰 **Daily Money**\n> Claimed \`${randomMoney}€\``;
 
             if (member.premiumSinceTimestamp) {
-                message = `> 🪙 **Daily Money**\n> Claimed \`${randomMoney}€\` + \`${boostRandomMoney}€\` **Booster Bonus**`
+                message = `> 💰 **Daily Money**\n> Claimed \`${randomMoney}€\` + \`${boostRandomMoney}€\` **Booster Bonus**`
+                logMessage += ` + ${boostRandomMoney}€ Booster Bonus`;
+
                 modifyUserMoney(serverID, userID, boostRandomMoney);
             }
 
@@ -42,7 +46,7 @@ export default {
             interaction.reply({
                 content: message
             });
-            easyLog(`User ${userID} claimed ${randomMoney}€`, 'INFO', serverID);
+            easyLog(logMessage, 'INFO', serverID);
         } else {
             interaction.reply({
                 embeds: [easyEmbed("#ff0000", "Daily Money", `Try again <t:${Math.floor((await getUserDailyTimestamp(serverID, userID) + oneDay) / 1000)}:R>!`)],
