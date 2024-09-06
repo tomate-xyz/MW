@@ -39,7 +39,7 @@ export default {
             modifyUserMoney(serverID, userID, randomMoney);
 
             interaction.reply({
-                content: `Claimed \`${randomMoney}€\`!`
+                content: message
             });
             easyLog(`User ${userID} claimed ${randomMoney}€`, 'INFO', serverID);
         } else {
