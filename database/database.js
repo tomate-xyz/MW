@@ -30,6 +30,21 @@ const User = sequelize.define('User', {
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: Date.now() - (24 * 60 * 60 * 1000)
+    },
+    level: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1
+    },
+    xp: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    maxMoney: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 100
     }
 });
 

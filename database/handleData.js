@@ -57,7 +57,12 @@ const modifyUserMoney = async (serverID, userID, amountChange) => {
         });
 
         if (user) {
-            const newAmount = user.money + amountChange;
+            let newAmount = user.money + amountChange;
+
+            if (newAmount > user.maxMoney) {
+                newAmount = user.maxMoney;
+                console.log(`User ${userID}'s money capped at maxMoney: ${user.maxMoney}.`);
+            }
 
             await setUserMoney(serverID, userID, newAmount);
             console.log(`User ${userID} money modified by ${amountChange}. New amount: ${newAmount} in server ${serverID}.`);
@@ -181,6 +186,63 @@ const getRichestUsers = async (serverID) => {
     }
 }
 
+const levelUpThreshold = (level) => {
+    return level * 100;
+};
+
+const addXp = async (serverID, userID, xpToAdd) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                userID,
+                serverID
+            }
+        });
+
+        if (user) {
+            user.xp += xpToAdd;
+
+            const threshold = levelUpThreshold(user.level);
+            if (user.xp >= threshold) {
+                user.level += 1;
+                user.xp = 0;
+                user.maxMoney += 100;
+                console.log(`User ${userID} leveled up to level ${user.level} with new maxMoney ${user.maxMoney}.`);
+            }
+
+            await user.save();
+        } else {
+            console.log(`User ${userID} not found in server ${serverID}.`);
+        }
+    } catch (error) {
+        console.error("Error adding XP:", error);
+    }
+};
+
+const getUserLevelAndXp = async (serverID, userID) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                userID,
+                serverID
+            }
+        });
+
+        if (user) {
+            return {
+                level: user.level,
+                xp: user.xp,
+                maxMoney: user.maxMoney
+            };
+        } else {
+            console.log(`User ${userID} not found in server ${serverID}.`);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error retrieving user level and XP:", error);
+    }
+};
+
 export {
     createUser,
     deleteUser,
@@ -189,5 +251,7 @@ export {
     getUserMoney,
     setUserDailyTimestamp,
     getUserDailyTimestamp,
-    getRichestUsers
+    getRichestUsers,
+    addXp,
+    getUserLevelAndXp
 };
