@@ -5,9 +5,11 @@ import {
 } from "discord.js";
 import {
     easyArrayPicker,
-    easyEmbed
+    easyEmbed,
+    easyRandomNumber
 } from "../../bot_modules/utils.js";
 import {
+    addXp,
     getUserMoney,
     modifyUserMoney
 } from "../../database/handleData.js";
@@ -171,6 +173,7 @@ export default {
                 components: finalRows
             });
 
+            await addXp(serverID, userID, easyRandomNumber(6, 12));
             await modifyUserMoney(serverID, userID, win);
         });
     }

@@ -1,9 +1,11 @@
 import {
     easyArrayPicker,
     easyArrayShuffle,
-    easyEmbed
+    easyEmbed,
+    easyRandomNumber
 } from "../../bot_modules/utils.js";
 import {
+    addXp,
     getUserMoney,
     modifyUserMoney
 } from "../../database/handleData.js"
@@ -258,6 +260,7 @@ export default {
             if (i.customId === correctAnswer.toString()) {
                 response = `> ✅ \`${i.customId}\` is correct!\n> You won \`2€\`!`;
 
+                await addXp(serverID, userID, easyRandomNumber(1, 6));
                 await modifyUserMoney(serverID, userID, 4);
             } else {
                 response = `> ❌ \`${i.customId}\` is incorrect. The correct answer would've been \`${correctAnswer.toString()}\`!\n> You lost \`2€\`!`;
