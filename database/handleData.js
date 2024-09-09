@@ -192,28 +192,29 @@ const levelUpThreshold = (level) => {
 
 const addXp = async (serverID, userID, xpToAdd) => {
     try {
-        const user = await User.findOne({
+        let user = await User.findOne({
             where: {
                 userID,
                 serverID
             }
         });
 
-        if (user) {
-            user.xp += xpToAdd;
-
-            const threshold = levelUpThreshold(user.level);
-            if (user.xp >= threshold) {
-                user.level += 1;
-                user.xp = 0;
-                user.maxMoney += 100;
-                console.log(`User ${userID} leveled up to level ${user.level} with new maxMoney ${user.maxMoney}.`);
-            }
-
-            await user.save();
-        } else {
-            console.log(`User ${userID} not found in server ${serverID}.`);
+        if (!user) {
+            user = await createUser(serverID, userID);
+            console.log(`User ${userID} not found in server ${serverID}. Created new user.`);
         }
+
+        user.xp += xpToAdd;
+
+        const threshold = levelUpThreshold(user.level);
+        if (user.xp >= threshold) {
+            user.level += 1;
+            user.xp = 0;
+            user.maxMoney += 100;
+            console.log(`User ${userID} leveled up to level ${user.level} with new maxMoney ${user.maxMoney}.`);
+        }
+
+        await user.save();
     } catch (error) {
         console.error("Error adding XP:", error);
     }
@@ -221,27 +222,28 @@ const addXp = async (serverID, userID, xpToAdd) => {
 
 const getUserLevelAndXp = async (serverID, userID) => {
     try {
-        const user = await User.findOne({
+        let user = await User.findOne({
             where: {
                 userID,
                 serverID
             }
         });
 
-        if (user) {
-            return {
-                level: user.level,
-                xp: user.xp,
-                maxMoney: user.maxMoney
-            };
-        } else {
-            console.log(`User ${userID} not found in server ${serverID}.`);
-            return null;
+        if (!user) {
+            user = await createUser(serverID, userID);
+            console.log(`User ${userID} not found in server ${serverID}. Created new user with default values.`);
         }
+
+        return {
+            level: user.level,
+            xp: user.xp,
+            maxMoney: user.maxMoney
+        };
     } catch (error) {
         console.error("Error retrieving user level and XP:", error);
     }
 };
+
 
 export {
     createUser,
