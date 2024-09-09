@@ -173,7 +173,7 @@ export default {
                 components: finalRows
             });
 
-            await addXp(serverID, userID, easyRandomNumber(6, 12));
+            if (win > 5) await addXp(serverID, userID, easyRandomNumber(6, 12));
             await modifyUserMoney(serverID, userID, win);
         });
     }
