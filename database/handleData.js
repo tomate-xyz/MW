@@ -244,7 +244,6 @@ const getUserLevelAndXp = async (serverID, userID) => {
     }
 };
 
-
 export {
     createUser,
     deleteUser,
