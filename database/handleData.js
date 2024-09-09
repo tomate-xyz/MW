@@ -210,7 +210,7 @@ const addXp = async (serverID, userID, xpToAdd) => {
         if (user.xp >= threshold) {
             user.level += 1;
             user.xp = 0;
-            user.maxMoney += 100;
+            user.maxMoney += 25;
             console.log(`User ${userID} leveled up to level ${user.level} with new maxMoney ${user.maxMoney}.`);
         }
 
