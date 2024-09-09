@@ -1,6 +1,7 @@
 import {
     getUserMoney,
-    getUserDailyTimestamp
+    getUserDailyTimestamp,
+    getUserLevelAndXp
 } from "../../database/handleData.js";
 
 export default {
@@ -19,8 +20,11 @@ export default {
 
         const dailyText = isDailyAvailable ? "\`Available!\`" : `<t:${Math.floor((await getUserDailyTimestamp(serverID, userID) + oneDay) / 1000)}:f>`;
 
+        const userStats = await getUserLevelAndXp(serverID, userID);
+        const nextLevelXP = userStats.level * 100;
+
         interaction.reply({
-            content: `> 💰 Money: \`${await getUserMoney(serverID, userID)}€\`\n> 🕑 Next Daily: ${dailyText}`,
+            content: `> 📊 Level: \`${userStats.level}\` \`${userStats.xp}XP|${nextLevelXP}XP\` \n> 💰 Money: \`${await getUserMoney(serverID, userID)}€|${userStats.maxMoney}€\`\n> 🕑 Next Daily: ${dailyText}`,
             ephemeral: true
         });
     },
